@@ -13,7 +13,7 @@ defmodule Envex.Mixfile do
      build_embedded: Mix.env == :prod,
      start_permanent: Mix.env == :prod,
      deps: deps(),
-     aliases: [publish: ["hex.publish", "hex.docs", &git_tag/1], tag: [&git_tag/1]],
+     aliases: [publish: ["hex.publish", "hex.publish docs", "tag"], tag: [&git_tag/1]],
      source_url: @project_url,
      homepage_url: @project_url,
      description: "Environment configuration parser. Purely functional, server free.",
