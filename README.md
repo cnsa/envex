@@ -13,7 +13,8 @@ See the [docs](https://hexdocs.pm/envex/) for more information.
 - [ ] Write API description for README.  
   Currently only via docs.
 - [ ] Add Travis CI
-- [ ] Optimize coercion.  
+- [x] Optimize coercion.  
+- [x] Add specs.  
 
 ## Installation
 
@@ -25,13 +26,9 @@ If [available in Hex](https://hex.pm/docs/publish), the package can be installed
     def deps do
       [{:envex, "~> 0.1.1"}]
     end
-    ```
-
-  2. Ensure `envex` is started before your application:
-
+    ``` 
+  2. Feel free to use it inside your app, like:
+  
     ```elixir
-    def application do
-      [applications: [:envex]]
-    end
+    Envex.map(:ecto_repos)
     ```
-

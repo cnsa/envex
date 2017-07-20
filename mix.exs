@@ -2,7 +2,7 @@ defmodule Envex.Mixfile do
   use Mix.Project
 
   @project_url "https://github.com/cnsa/envex"
-  @version "0.1.1"
+  @version "0.1.2"
 
 
   def project do
@@ -42,6 +42,7 @@ defmodule Envex.Mixfile do
 
   defp deps do
     [
+      {:coercion, "~> 1.0.0"},
       {:ex_doc, "~> 0.11", only: :dev, runtime: false},
       {:earmark, ">= 0.0.0", only: :dev},
       {:ex_spec, "~> 2.0.0", only: :test},
