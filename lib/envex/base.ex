@@ -97,10 +97,12 @@ defmodule Envex.Base do
 
   @doc false
   defp _prepare_map(map, default, converter \\ &__get/2)
-  defp _prepare_map(map, default, converter) when is_map(map) do
+  defp _prepare_map(map, default, converter) when is_list(map) or is_map(map) do
     map |> Enum.map(fn({key, value}) -> {key, converter.(value, default)} end)
   end
-  defp _prepare_map(_, _, _), do: nil
+  defp _prepare_map(map, _, _) do
+    raise ArgumentError, "cannot parse #{inspect map}"
+  end
 
   @doc false
   defp __get(value, default) do
@@ -127,11 +129,12 @@ defmodule Envex.Base do
     case value do
       nil -> default
       n when is_integer(n) -> n
-      n ->
+      n when is_bitstring(n) ->
         case Integer.parse(n) do
           {i, _} -> i
           :error -> value
         end
+      n -> raise ArgumentError, "No integer found: #{inspect n}"
     end
   end
 end
