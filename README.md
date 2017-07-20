@@ -1,7 +1,19 @@
 # Envex
 
+[![Hex.pm](https://img.shields.io/hexpm/v/envex.svg?maxAge=2592000)](https://hex.pm/packages/envex)
+[![Deps Status](https://beta.hexfaktor.org/badge/prod/github/merqlove/envex.svg)](https://beta.hexfaktor.org/github/merqlove/envex)
+
 Environment configuration parser. Purely functional, server free.
 Full support for projects with `REPLACE_OS_VARS=true` in mind. 
+
+See the [docs](https://hexdocs.pm/envex/) for more information.
+
+# TODO:
+
+- [ ] Write API description for README.  
+  Currently only via docs.
+- [ ] Add Travis CI
+- [ ] Optimize coercion.  
 
 ## Installation
 
