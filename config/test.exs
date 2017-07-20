@@ -1,8 +1,5 @@
 use Mix.Config
 
-config :envex, :envex,
-  endpoint: Some
-
 config :envex, :other,
   boolean: true,
   integer: "5",
@@ -18,6 +15,7 @@ config :envex, Some,
   integer_map: %{some: "5", other: ""}
 
 config :envex,
+  endpoint: Some,
   boolean: true,
   integer: "5",
   some: Some,

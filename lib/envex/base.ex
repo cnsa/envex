@@ -5,8 +5,7 @@ defmodule Envex.Base do
 
   defmacro __using__(_) do
     default_app       = Mix.Project.config[:app]
-    opts              = Application.get_env(default_app, :envex, [])
-    default_namespace = Keyword.get(opts, :endpoint)
+    default_namespace = Application.get_env(:envex, :endpoint, nil)
 
     quote bind_quoted: [default_app: default_app, default_namespace: default_namespace] do
       @doc """
