@@ -23,7 +23,7 @@ If [available in Hex](https://hex.pm/docs/publish), the package can be installed
 
     ```elixir
     def deps do
-      [{:envex, "~> 0.1.0"}]
+      [{:envex, "~> 0.1.1"}]
     end
     ```
 

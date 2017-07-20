@@ -2,7 +2,7 @@ defmodule Envex.Mixfile do
   use Mix.Project
 
   @project_url "https://github.com/cnsa/envex"
-  @version "0.1.0"
+  @version "0.1.1"
 
 
   def project do
