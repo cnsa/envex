@@ -3,6 +3,30 @@ defmodule EnvexTest do
   doctest Envex
 
   describe "Base" do
+    context "env vars" do
+      setup do
+        System.put_env("SOME_ENV", "demo")
+        System.put_env("SOME_INTEGER", "5")
+        System.put_env("SOME_BOOL", "no")
+      end
+
+      it "string" do
+        assert "demo" = Envex.get(:env)
+      end
+
+      it "integer" do
+        assert 5 = Envex.integer(:integer_env)
+      end
+
+      it "boolean" do
+        assert false == Envex.boolean(:boolean_env)
+      end
+
+      it "default" do
+        assert 5 = Envex.get(:env_default)
+      end
+    end
+
     context "endpoint" do
       it "endpoint" do
         assert :key = Envex.endpoint(:some)
