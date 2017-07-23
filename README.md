@@ -1,6 +1,6 @@
 # Envex
 
-[![Hex.pm](https://img.shields.io/hexpm/v/envex.svg?maxAge=2592000)](https://hex.pm/packages/envex)
+[![Hex.pm](https://img.shields.io/hexpm/v/envex.svg)](https://hex.pm/packages/envex)
 [![Deps Status](https://beta.hexfaktor.org/badge/prod/github/cnsa/envex.svg)](https://beta.hexfaktor.org/github/cnsa/envex)
 
 Environment configuration parser. Purely functional, server free.
