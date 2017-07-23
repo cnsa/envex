@@ -13,14 +13,14 @@ defmodule Envex.Base do
       """
       @spec endpoint(atom, term | nil) :: term
       def endpoint(key, default \\ nil), do:
-        Envex.Base.endpoint(unquote(default_app), unquote(default_namespace), key, default)
+        Envex.Base.get(unquote(default_app), {unquote(default_namespace), key}, default)
 
       @doc """
       Fetches key from the default namespace config, and prepare it with _prepare_map/3.
       """
       @spec endpoint_map(atom, term | nil) :: Keyword.t
       def endpoint_map(key, default \\ nil), do:
-        Envex.Base.endpoint_map(unquote(default_app), unquote(default_namespace), key, default)
+        Envex.Base.get_map(unquote(default_app), {unquote(default_namespace), key}, default)
 
       @doc """
       Fetches a value from the config, or from the environment if {:system, "VAR"}
@@ -28,24 +28,14 @@ defmodule Envex.Base do
       An optional default value can be provided if desired.
       """
       @spec get(atom, atom, term | nil) :: term
-      def get(key, app \\ unquote(default_app), default \\ nil)
-
-      def get({namespace, key}, app, default), do:
-        Envex.Base.endpoint(app, namespace, key, default)
-
-      def get(key, app, default), do:
+      def get(key, app \\ unquote(default_app), default \\ nil), do:
         Envex.Base.get(app, key, default)
 
       @doc """
       Same as get/3, but when you has map.
       """
       @spec map(atom, atom, term | nil) :: Keyword.t
-      def map(key, app \\ unquote(default_app), default \\ nil)
-
-      def map({namespace, key}, app, default), do:
-        Envex.Base.endpoint_map(app, namespace, key, default)
-
-      def map(key, app, default), do:
+      def map(key, app \\ unquote(default_app), default \\ nil), do:
         Envex.Base.get_map(app, key, default)
 
       @doc """
@@ -54,24 +44,14 @@ defmodule Envex.Base do
       default is returned instead.
       """
       @spec integer(atom() | term, atom(), integer()) :: integer
-      def integer(key, app \\ unquote(default_app), default \\ nil)
-
-      def integer({namespace, key}, app, default), do:
-        Envex.Base.endpoint(app, namespace, key, default, :integer)
-
-      def integer(key, app, default), do:
+      def integer(key, app \\ unquote(default_app), default \\ nil), do:
         Envex.Base.get(app, key, default, :integer)
 
       @doc """
       Same as integer/3, but when you have integer values in the map.
       """
       @spec integer_map(atom() | term, atom(), integer()) :: Keyword.t
-      def integer_map(key, app \\ unquote(default_app), default \\ nil)
-
-      def integer_map({namespace, key}, app, default), do:
-        Envex.Base.endpoint_map(app, namespace, key, default, :integer)
-
-      def integer_map(key, app, default), do:
+      def integer_map(key, app \\ unquote(default_app), default \\ nil), do:
         Envex.Base.get_map(app, key, default, :integer)
 
       @doc """
@@ -80,56 +60,33 @@ defmodule Envex.Base do
       default is returned instead.
       """
       @spec boolean(atom() | term, atom(), boolean()) :: boolean
-      def boolean(key, app \\ unquote(default_app), default \\ nil)
-
-      def boolean({namespace, key}, app, default), do:
-        Envex.Base.endpoint(app, namespace, key, default, :boolean)
-
-      def boolean(key, app, default), do:
+      def boolean(key, app \\ unquote(default_app), default \\ nil), do:
         Envex.Base.get(app, key, default, :boolean)
 
       @doc """
       Same as boolean/3, but when you have boolean values in the map.
       """
       @spec boolean_map(atom() | term, atom(), boolean()) :: Keyword.t
-      def boolean_map(key, app \\ unquote(default_app), default \\ nil)
-
-      def boolean_map({namespace, key}, app, default), do:
-        Envex.Base.endpoint_map(app, namespace, key, default, :boolean)
-
-      def boolean_map(key, app, default), do:
+      def boolean_map(key, app \\ unquote(default_app), default \\ nil), do:
         Envex.Base.get_map(app, key, default, :boolean)
     end
   end
 
   @doc false
-  def endpoint(app, namespace, key, default) do
+  def get(app, {namespace, key}, default) do
     Application.get_env(app, namespace)[key]
     |> _get(default)
   end
 
-  @doc false
-  def endpoint(app, namespace, key, default, type) do
-    value = endpoint(app, namespace, key, default)
-    _coerce(type, value, default)
-  end
-
-  @doc false
-  def endpoint_map(app, namespace, key, default) do
-    Application.get_env(app, namespace)[key]
-    |> _prepare_map(default)
-  end
-
-  @doc false
-  def endpoint_map(app, namespace, key, default, type) do
-    endpoint_map(app, namespace, key, default)
-    |> _prepare_map(default, &_coerce(type, &1, &2))
-  end
-
-  @doc false
   def get(app, key, default) when is_atom(app) and is_atom(key) do
     Application.get_env(app, key)
     |> _get(default)
+  end
+
+  @doc false
+  def get(app, {_, _} = key, default, type) do
+    value = get(app, key, nil)
+    _coerce(type, value, default)
   end
 
   @doc false
@@ -139,9 +96,21 @@ defmodule Envex.Base do
   end
 
   @doc false
+  def get_map(app, {namespace, key}, default) do
+    Application.get_env(app, namespace)[key]
+    |> _prepare_map(default)
+  end
+
+  @doc false
   def get_map(app, key, default) when is_atom(app) and is_atom(key) do
     Application.get_env(app, key)
     |> _prepare_map(default)
+  end
+
+  @doc false
+  def get_map(app, {_, _} = key, default, type) do
+    get_map(app, key, nil)
+    |> _prepare_map(default, &_coerce(type, &1, &2))
   end
 
   @doc false
