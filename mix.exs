@@ -2,7 +2,7 @@ defmodule Envex.Mixfile do
   use Mix.Project
 
   @project_url "https://github.com/cnsa/envex"
-  @version "0.1.4"
+  @version "0.1.5"
 
 
   def project do
@@ -13,7 +13,7 @@ defmodule Envex.Mixfile do
      build_embedded: Mix.env == :prod,
      start_permanent: Mix.env == :prod,
      deps: deps(),
-     aliases: [publish: ["hex.publish", "hex.publish docs", "tag"], tag: [&git_tag/1]],
+     aliases: [publish: ["hex.publish", "hex.publish docs", &git_tag/1], tag: [&git_tag/1]],
      source_url: @project_url,
      homepage_url: @project_url,
      description: "Environment configuration parser. Purely functional, server free.",
@@ -63,6 +63,7 @@ defmodule Envex.Mixfile do
 
   defp git_tag(_args) do
     System.cmd "git", ["tag", "v" <> Mix.Project.config[:version]]
+    System.cmd "git", ["push", "--tags"]
   end
 
   defp docs do
